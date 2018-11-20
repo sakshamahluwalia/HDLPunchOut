@@ -1,0 +1,18 @@
+Milestone 1:
+
+Task 1: VGA Setup
+Subproblems:
+1) Find images of boxing gloves
+2) Find images of boxer (2)
+3) Show images on VGA in fixed position
+4) 
+
+
+
+Task 2: Data Path for Enemy Movements
+
+
+Task 3: Create FSM for control path of enemy movements
+
+All possible values:
+
