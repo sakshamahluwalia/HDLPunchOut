@@ -1,12 +1,16 @@
-module enemy_control();
+module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
 
 	//list of inputs
 	input clock;
 	input reset_n;
 	input go;
+	input [3:0] health;
 	
 	//list of outputs
-	
+	output reg [1:0] x_pos;
+	output reg speed;
+	output reg attack;
+	output reg dead;
 
 	
 	reg [3:0] current_state, next_state; 
@@ -53,6 +57,9 @@ module enemy_control();
 		  //X_pos = 2'b11 (3) -> Change VGA_X to 100
 		  x_pos = 2'b00;
 		  
+		  //dead signal necessay
+		  dead = 1'b0;
+		  
         case (current_state)
             LEFT_CALM: 
 					begin
@@ -87,6 +94,7 @@ module enemy_control();
 				//TODO DEAD CONTROL SIGNALS
 				DEAD:
 					begin
+						dead = 1'b1;
 					end
         endcase
     end
@@ -97,11 +105,8 @@ module enemy_control();
             current_state <= LEFT_CALM;
 		//if the opponent has less than half their health, 
 		//they become more aggressive, move into different set of states
-		  else if (health < 4'd6)
-				begin
-					if (current_state < 4'b3)
-						current_state <= next_state + 3;
-				end
+		  else if (health < 4'd6 && current_state < 4'd3)
+				current_state <= next_state + 3;
 		  else if (health == 4'b0)
 				current_state <= DEAD;
         else
