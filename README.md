@@ -10,7 +10,6 @@ https://www.google.com/search?q=sprite+image+boxing+glove+download&client=ubuntu
 
 
 glove:
-
 https://www.google.com/search?q=sprite+image+boxing+glove+download&client=ubuntu&tbm=isch&tbs=rimg:Cd3ANZhVf3iaIjjn8oawWF2YirOmcSgqdct7xhtV_1GPE2ku5ucCM4zSEdUpr1iY6oX_185HfQdOggfMyZhKf2gNrwASoSCefyhrBYXZiKEZKxQgPFnSmDKhIJs6ZxKCp1y3sRVYV2nA9QjUoqEgnGG1X8Y8TaSxFe70QQhJ4SnSoSCbm5wIzjNIR1EexcuQXTurIsKhIJSmvWJjqhf_1wRDhLOfBsvvbEqEgnkd9B06CB8zBGpe9EphBDN2ioSCZmEp_1aA2vABEZJPMM0swJhH&tbo=u&sa=X&ved=2ahUKEwivs97XtOPeAhXij4MKHfiKAgMQ9C96BAgBEBs#imgrc=XhwKc2VsWcppyM:
 
 
