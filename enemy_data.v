@@ -1,4 +1,4 @@
-module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move);
+module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move, attack_out);
 
 	// singlebit inputs
 	input clock;
@@ -12,6 +12,7 @@ module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move);
 	output [7:0] x_out; // 8 bits following the lab.
 	output [6:0] y_out;
 	output move;
+	output attack_out;
 
 	// used to set the x co - ordinate output at the end.
 	wire [7:0] x;
@@ -32,6 +33,8 @@ module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move);
 	assign y_out = 7'b1000; // SET A CONSTANT FOR Y. TODO
 
 	// fix the value for rate_dividers (Lab 5 part 2)
+	
+	wire [27:0] hz05, hz025;
 
 	rate_divider r05hz(clk, reset_n, {1'b0, 27'd99999999}, hz05);
 	rate_divider r025hz(clk, reset_n, {28'd499999999}, hz025); 
@@ -43,7 +46,7 @@ module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move);
 	always @(*)
 		begin
 			case(speed)
-				1'b0: go = (hz1 == 0) ? 1 : 0;
+				1'b0: go = (hz025 == 0) ? 1 : 0;
 				1'b1: go = (hz05 == 0) ? 1 : 0;
 			endcase
 		end
@@ -74,12 +77,14 @@ module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move);
 		end
 
 
+	wire should_attack;
 
 	// logic to make the player attack.
-	attack a1(clk, resetn, move_count, attack, output);
+	attack a1(clk, resetn, move_count, attack, should_attack);
 
-	// relay information back to fsm.
+	// relay information back to LFSR as enable.
 	assign move = go;
+	assign should_attack = attack_out;
 
 endmodule
 
