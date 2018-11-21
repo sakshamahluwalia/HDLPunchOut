@@ -1,4 +1,4 @@
-module datapath(clock, resetn, speed, attack, x_pos, x_out);
+module datapath(clock, resetn, speed, attack, x_pos, x_out, move);
 
 	// singlebit inputs
 	input clock;
@@ -10,6 +10,7 @@ module datapath(clock, resetn, speed, attack, x_pos, x_out);
 
 	// outputs
 	output [7:0] x_out;
+	output move;
 
 	// used to set the x co - ordinate output at the end.
 	wire [7:0] x;
@@ -45,9 +46,27 @@ module datapath(clock, resetn, speed, attack, x_pos, x_out);
 			endcase
 		end
 
+	// count the number of moves we have made.
+	reg [1:0] move_count;
 
-	attack a1(clk, resetn, go, output);
+	always @(posedge clk)
+		begin
+			else if (go == 1'b1)
+				begin
+					if (move_count == 2'b11) // CHECK THIS LOGIC IS IT HIGH OR LOW UPDATE ATTACK
+						move_count <= 2'b00;
+					else
+						move_count <= move_count + 1'b1;
+				end
+		end
 
+
+
+	// logic to make the player attack.
+	attack a1(clk, resetn, move_count, attack, output);
+
+	// relay information back to fsm.
+	assign move = go;
 
 endmodule
 
@@ -73,20 +92,30 @@ module rate_divider(clk, reset_n, enable, d, q);
 	
 endmodule
 
-module attack(clk, reset_n, enable, q);
-	input enable, clk, reset_n;
+module attack(clk, reset_n, move_count, attack, q);
+	input move_count, clk, reset_n;
 	output reg [3:0] q;
 	
 	always @(posedge clk, negedge reset_n)
 	begin
 		if (reset_n == 1'b0)
 			q <= 4'b0000;
-		else if (enable == 1'b1)
-			begin
-				if (q == 4'b1111)
-					q <= 4'b0000;
-				else
-					q <= q + 1'b1;
-			end
+
+		else if (move_count == 1'b0) // if move_count is low ()
+
+			if (attack == 1'b0)
+				begin
+					if (q == 2'b11)
+						q <= 2'b00;
+					else
+						q <= q + 1'b1;
+				end
+			else if (attack == 1'b1)
+				begin
+					if (q == 4'b1111)
+						q <= 4'b0000;
+					else
+						q <= q + 1'b1;
+				end
 	end
 endmodule
