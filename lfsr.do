@@ -12,7 +12,7 @@ force {reset_n} 0
 force {clock} 0 0ns, 1 10ns
 run 20ns
 
-force {reset_n} 1
+force {reset_n} 0
 force {enable} 0 
 force {counter_val} 2#01110010
 force {clock} 0 0ns, 1 10ns -repeat 20ns

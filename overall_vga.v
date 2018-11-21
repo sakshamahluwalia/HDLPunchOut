@@ -19,6 +19,8 @@ module overall_vga(
 	//are we using these?
 	input   [9:0]   SW;
 	input   [3:0]   KEY;
+	
+	//what
 
 
 	// Do not change the following outputs

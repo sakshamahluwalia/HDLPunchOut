@@ -38,7 +38,7 @@ module lfsr(clock, reset_n, enable, counter_val, random_pos);
 					LFSR_val <= (counter_val != 8'b0) ? 8'b01110111 : 8'b11111110;
 					LFSR_set <= 1'b1;
 				end
-			// when we need the LSFR to work, we can generate our pseudorandom values
+			// when we need the LFSR to work, we can generate our pseudorandom values
 			else if (enable)
 				LFSR_val <= {LFSR_val[6], LFSR_val[5], LFSR_val[4], LFSR_val[3],
 								 LFSR_val[2], LFSR_val[1], LFSR_val[0], end_val};
