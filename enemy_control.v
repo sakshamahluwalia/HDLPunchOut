@@ -24,7 +24,9 @@ module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
 				RIGHT_AGGRESSIVE				= 3'd5,
 				DEAD							= 3'd6;
 					 
-	//finite state machine transition			 
+	//finite state machine transition
+
+	// shoudnt we wait for the counter to finish counting before changing states??	 
 	always @(*)
 		begin 
 			case (current_state)
