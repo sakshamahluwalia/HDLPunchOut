@@ -2,3 +2,9 @@ ToDo:
 - update the hz on rateDividers.
 - fix the go signal for attack on move.
 - get the .mif image frim .bmp
+- create FSM for attack that
+   - puts indicator on screen for attack
+   - does animation
+   - checks if hit
+   - does animation backward
+  

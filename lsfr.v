@@ -6,6 +6,7 @@ module LFSR(clock, reset_n, enable, random_pos);
 	input enable;
 	
 	// 1 bit position of XOR'd values
+	// also serves as the go in the control
 	output random_pos;
 	
 	// stores total value in LSFR
