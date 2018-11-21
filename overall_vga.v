@@ -53,3 +53,21 @@ module overall_vga(
 		defparam VGA.BACKGROUND_IMAGE = "black.mif";
 
 endmodule
+
+module counter(clock, reset_n, out);
+
+	input clock;
+	input reset_n;
+	output reg [7:0] out;
+	
+	always @(posedge clock)
+	begin
+		if (!reset_n)
+			begin
+				out <= 8'b0;
+			end
+		else
+			out <= out + 1'b1;
+	end
+			
+endmodule
