@@ -16,13 +16,13 @@ module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
 	reg [3:0] current_state, next_state; 
 
 	//states listed out as local_params
-   localparam   LEFT_CALM       					= 3'd0,
-					 MIDDLE_CALM   					= 3'd1,
-					 RIGHT_CALM       				= 3'd2,
-					 LEFT_AGGRESSIVE    				= 3'd3,
-					 MIDDLE_AGGRESSIVE          	= 3'd4,
-					 RIGHT_AGGRESSIVE					= 3'd5,
-					 DEAD									= 3'd6;
+   localparam   LEFT_CALM       				= 3'd0,
+				MIDDLE_CALM   					= 3'd1,
+				RIGHT_CALM       				= 3'd2,
+				LEFT_AGGRESSIVE    				= 3'd3,
+				MIDDLE_AGGRESSIVE          		= 3'd4,
+				RIGHT_AGGRESSIVE				= 3'd5,
+				DEAD							= 3'd6;
 					 
 	//finite state machine transition			 
 	always @(*)
@@ -47,7 +47,7 @@ module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
 		  //Speed = 0 -> RateDivider (__Hz)
 		  //Speed = 1 -> RateDivider (2*__Hz)
         speed = 1'b0;
-		  
+		
 		  //Attack = 0 -> Wait for 4 position changes
 		  //Attack = 1 -> Wait for 2 position changes
         attack = 1'b0;

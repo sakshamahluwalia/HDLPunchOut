@@ -1,0 +1,4 @@
+ToDo:
+- update the hz on rateDividers.
+- fix the go signal for attack on move.
+- get the .mif image frim .bmp

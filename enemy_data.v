@@ -1,84 +1,92 @@
-module datapath(clock, enable, resetn, c_in, point,	load_x,	load_y,	load_colour, x_out,	y_out, c_out);
+module datapath(clock, resetn, speed, attack, x_pos, x_out);
 
 	// singlebit inputs
 	input clock;
-	input enable;
 	input resetn;
 
-	// load enables
-	input load_x;
-	input load_y;
-	input load_colour;
-
-	// multibit inputs
-	input [2:0] c_in;
-	input [6:0] point;
+	input speed;
+	input attack;
+	input [1:0] x_pos;
 
 	// outputs
 	output [7:0] x_out;
-	output [6:0] y_out;
-	output [2:0] c_out;
 
-	reg speed;
-	reg attack;
-	reg [1:0] x_pos;
-	reg [2:0] health;
-	reg [3:0] counter;
+	// used to set the x co - ordinate output at the end.
+	wire [7:0] x;
 
-	// registers for x, y and color update based on the value of load[x, y, colour].
+	// set the x co - ordinate to either 20, 60, 100.
 	always @(posedge clock) begin
-		if (!resetn) begin
-			x <= 8'b0;
-			y <= 7'b0;
-			colour <= 3'b0;
-		end
-		else begin
-			if (load_x)
-				x <= {1'b0, point};
-			if (load_y)
-				y <= point;
-			if (load_colour)
-				colour <= c_in;
-		end
+
+		if (x_pos == 2'b00)
+			x = {3'b0, 5'b10100}; //set x to 20
+		else if (x_pos == 2'b01)
+			x = {2'b0, 6'b111100}; //set x to 60
+		else if (x_pos == 2'b10)
+			x = {1'b0, 7'b1100100}; //set x to 100
+
 	end
 
-	// counter for x and y co-ordinates.
-	always @(posedge clock) begin
-		if (!resetn)
-			counter <= 4'b0000;
-		else if (enable) begin
-			if (counter == 4'b1111)
-				counter <= 4'b0000;
-			else
-				counter <= counter + 1'b1;
-		end
-	end
+	assign x_out = x;
 
-	assign x_out = x + counter[3:2];
-	assign y_out = y + counter[1:0];
-	assign c_out = colour;
+	// fix the value for rate_dividers (Lab 5 part 2)
+
+	rate_divider r05hz(clk, reset_n, {1'b0, 27'd99999999}, hz05);
+	rate_divider r025hz(clk, reset_n, {28'd499999999}, hz025); 
+
+	// use this for attacking and moving
+	wire go;
+	
+	// when enable(go) is 0 then we have waited for hzT amount of time.
+	always @(*)
+		begin
+			case(speed)
+				1'b0: go = (hz1 == 0) ? 1 : 0;
+				1'b1: go = (hz05 == 0) ? 1 : 0;
+			endcase
+		end
+
+
+	attack a1(clk, resetn, go, output);
+
 
 endmodule
 
 
 
-module RateDivider(enable, load_val_cycles, clock, reset_n, out);
-	input enable;
-	input clock, reset_n;
-	input [24:0] load_val_cycles;
-	output reg [24:0] out;
+module rate_divider(clk, reset_n, enable, d, q);
+	input enable, clk, reset_n;
+	input [27:0] d;
+	output reg [27:0] q;
 	
-	always @(posedge clock, negedge reset_n)
+	always @(posedge clk)
 	begin
 		if (reset_n == 1'b0)
-			out <= load_val_cycles;
-		else if (enable == 1'b0)
+			q <= d;
+		else if (enable == 1'b1)
 			begin
-				if (out == 1'b0)
-					out <= load_val_cycles;
+				if (q == 0)
+					q <= d;
 				else
-					out <= out - 1'b1;
+					q <= q - 1'b1;
 			end
 	end
-		
+	
+endmodule
+
+module attack(clk, reset_n, enable, q);
+	input enable, clk, reset_n;
+	output reg [3:0] q;
+	
+	always @(posedge clk, negedge reset_n)
+	begin
+		if (reset_n == 1'b0)
+			q <= 4'b0000;
+		else if (enable == 1'b1)
+			begin
+				if (q == 4'b1111)
+					q <= 4'b0000;
+				else
+					q <= q + 1'b1;
+			end
+	end
 endmodule
