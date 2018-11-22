@@ -1,5 +1,6 @@
 module lfsr(clock, reset_n, enable, counter_val, random_pos);
 
+	//TODO: make more random
 	input clock;
 	input reset_n;
 	// we need enable so we can set a random seed for the LFSR
@@ -14,7 +15,8 @@ module lfsr(clock, reset_n, enable, counter_val, random_pos);
 	reg [7:0] LFSR_val;
 	
 	// random values
-	wire end_val = LFSR_val[6] ^ LFSR_val[2];
+	wire end_val = LFSR_val[1] ^ LFSR_val[0] ^ ~LFSR_val[2];
+	wire mid_val = LFSR_val[7] ^ LFSR_val[6];
 	
 	// counter value helps find seed for LFSR
 	
@@ -35,12 +37,12 @@ module lfsr(clock, reset_n, enable, counter_val, random_pos);
 			// the LSFR value to be a random seed
 			else if (!enable & !LFSR_set)
 				begin
-					LFSR_val <= (counter_val != 8'b0) ? 8'b01110111 : 8'b11111110;
+					LFSR_val <= (counter_val != 8'b0) ? counter_val : 8'b11111110;
 					LFSR_set <= 1'b1;
 				end
 			// when we need the LFSR to work, we can generate our pseudorandom values
 			else if (enable)
-				LFSR_val <= {LFSR_val[6], LFSR_val[5], LFSR_val[4], LFSR_val[3],
+				LFSR_val <= {LFSR_val[6], mid_val, LFSR_val[4], LFSR_val[3],
 								 LFSR_val[2], LFSR_val[1], LFSR_val[0], end_val};
 		end
 	
