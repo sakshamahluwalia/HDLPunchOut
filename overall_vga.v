@@ -93,6 +93,77 @@ module initialization(clock, reset_n, start_project);
 	
 endmodule
 
+module enemy_x_pos_tracker(clock, reset_n, x_pos_change, enemy_curr_x);
+	input clock;
+	input reset_n;
+	input x_pos_change;
+	
+	output reg [7:0] enemy_curr_x;
+	
+	always @(posedge clock)
+		begin
+			if (!reset_n)
+				enemy_curr_x <= 8'b?;
+			// TODO FIND NUMBERS
+			else if (x_pos_change == 24234234234)
+				enemy_curr_x <= x_pos_change;
+			else if (x_pos_change == 24234234234)
+				enemy_curr_x <= x_pos_change;
+			else if (x_pos_change == 24234234234)
+				enemy_curr_x <= x_pos_change;
+		end
+endmodule
+
+module left_hand_y_pos_tracker(clock, reset_n, left_y_pos_change, left_hand_curr_y);
+	input clock;
+	input reset_n;
+	input left_y_pos_change;
+	
+	output reg [6:0] left_hand_curr_y;
+	
+	always @(posedge clock)
+		begin
+			if (!reset_n)
+				enemy_curr_x <= 2'b01;
+			else
+				enemy_curr_x <= x_pos_change;
+		end
+endmodule
+
+module right_hand_y_pos_tracker(clock, reset_n, right_y_pos_change, right_hand_curr_y);
+	input clock;
+	input reset_n;
+	input right_y_pos_change;
+	
+	output reg [6:0] right_hand_curr_y;
+	
+	always @(posedge clock)
+		begin
+			if (!reset_n)
+				enemy_curr_x <= 2'b01;
+			else
+				enemy_curr_x <= x_pos_change;
+		end
+endmodule
+
+module main_player_x_pos_tracker(clock, reset_n, y_pos_change, main_player_curr_x);
+	input clock;
+	input reset_n;
+	input y_pos_change;
+	
+	output reg [6:0] left_hand_curr_y;
+	
+	always @(posedge clock)
+		begin
+			if (!reset_n)
+				enemy_curr_x <= 2'b01;
+			else
+				enemy_curr_x <= x_pos_change;
+		end
+endmodule
+
+	
+
 module counter(clock, reset_n, out);
 
 	input clock;
