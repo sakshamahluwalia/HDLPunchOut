@@ -20,6 +20,19 @@ module overall_vga(
 	input   [9:0]   SW;
 	input   [3:0]   KEY;
 	
+	
+
+	// Create the colour, x, y and writeEn wires that are inputs to the controller.
+	wire [2:0] colour;
+	wire [7:0] x;
+	wire [6:0] y;
+	wire writeEn;
+	
+	assign writeEn = 1'b1;
+	assign x = 8'b00000000;
+	assign y = 7'b0000000;
+	assign colour = 3'b011;
+	
 	//what
 
 
@@ -53,7 +66,31 @@ module overall_vga(
 		defparam VGA.MONOCHROME = "FALSE";
 		defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
 		defparam VGA.BACKGROUND_IMAGE = "black.mif";
+		
+	// start_project sent to initialization function to determine when 
+	// it is complete
+	wire start_project;
+	
+	
+	//two resets
+	
+	//resetn is the overall system reset to bring everything back to beginning
+	wire resetn = KEY[0];
+	//interim_reset is the reset that will be ongoing while the initialization
+	// module is running, to ensure nothing starts before we want it to
+	wire interim_reset = resetn & start_project;
+		
 
+
+endmodule
+
+module initialization(clock, reset_n, start_project);
+	input clock;
+	input reset_n;
+	
+	output start_project;
+	
+	
 endmodule
 
 module counter(clock, reset_n, out);
