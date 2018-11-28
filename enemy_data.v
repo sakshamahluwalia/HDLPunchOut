@@ -1,4 +1,4 @@
-module datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move, attack_out);
+module enemy_datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move, attack_out);
 
 	// singlebit inputs
 	input clock;

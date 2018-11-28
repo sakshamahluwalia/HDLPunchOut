@@ -1,4 +1,4 @@
-module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
+module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead, writeEn);
 
 	//list of inputs
 	input clock;
@@ -11,6 +11,7 @@ module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
 	output reg speed;
 	output reg attack;
 	output reg dead;
+	output reg writeEn;
 
 	
 	reg [3:0] current_state, next_state; 
@@ -65,6 +66,8 @@ module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead);
 			  
 			  //dead signal necessay
 			  dead = 1'b0;
+			  
+			  writeEn = 1'b0;
 			  
 			  case (current_state)
 					LEFT_CALM: 

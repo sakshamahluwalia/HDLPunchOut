@@ -28,13 +28,11 @@ module overall_vga(
 	wire [6:0] y;
 	wire writeEn;
 	
-	assign writeEn = 1'b1;
-	assign x = 8'b00000000;
-	assign y = 7'b0000000;
-	assign colour = 3'b011;
+//	assign writeEn = 1'b1;
+//	assign x = 8'b00000000;
+//	assign y = 7'b0000000;
+//	assign colour = 3'b011;
 	
-	//what
-
 
 	// Do not change the following outputs
 	output			VGA_CLK;   				//	VGA Clock
@@ -79,6 +77,52 @@ module overall_vga(
 	//interim_reset is the reset that will be ongoing while the initialization
 	// module is running, to ensure nothing starts before we want it to
 	wire interim_reset = resetn & start_project;
+	
+	//enemy_attributes
+	
+	wire movement;
+	wire speed;
+	wire attack;
+	wire dead;
+	wire [1:0] x_pos;
+	wire [5:0] health;
+	wire initiate_attack;
+	
+	//lfsr enable governed by datapath output
+	wire lfsrEnable;
+	
+	lfsr lfsr0(
+			.clock(clock),
+			.reset_n(resetn),
+			.enable(lfsrEnable),
+			.counter_val(8'b10110101),
+			.random_pos(movement)
+	);
+	
+	
+	enemy_control ec0(
+			.clock(clock), 
+			.reset_n(resetn), 
+			.go(movement), 
+			.health(health), 
+			.x_pos(x_pos), 
+			.speed(speed), 
+			.attack(attack), 
+			.dead(dead),
+			.writeEn(writeEn)
+	);
+	
+	enemy_datapath ed0(
+			.clock(clock), 
+			.resetn(resetn), 
+			.speed(speed), 
+			.attack(attack), 
+			.x_pos(x_pos), 
+			.x_out(x), 
+			.y_out(y), 
+			.move(lfsrEnable), 
+			.attack_out(initiate_attack)
+	);
 		
 
 
