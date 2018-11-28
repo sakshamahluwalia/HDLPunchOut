@@ -28,7 +28,7 @@ module overall_vga(
 	wire [6:0] y;
 	wire writeEn;
 	
-//	assign writeEn = 1'b1;
+   assign writeEn = 1'b1;
 //	assign x = 8'b00000000;
 //	assign y = 7'b0000000;
 //	assign colour = 3'b011;
@@ -91,51 +91,109 @@ module overall_vga(
 	//lfsr enable governed by datapath output
 	wire lfsrEnable;
 	
-	lfsr lfsr0(
-			.clock(clock),
-			.reset_n(resetn),
-			.enable(lfsrEnable),
-			.counter_val(8'b10110101),
-			.random_pos(movement)
-	);
+//	lfsr lfsr0(
+//			.clock(clock),
+//			.reset_n(resetn),
+//			.enable(lfsrEnable),
+//			.counter_val(8'b10110101),
+//			.random_pos(movement)
+//	);
+//	
 	
-	
-	enemy_control ec0(
-			.clock(clock), 
-			.reset_n(resetn), 
-			.go(movement), 
-			.health(health), 
-			.x_pos(x_pos), 
-			.speed(speed), 
-			.attack(attack), 
-			.dead(dead),
-			.writeEn(writeEn)
-	);
-	
-	enemy_datapath ed0(
-			.clock(clock), 
-			.resetn(resetn), 
-			.speed(speed), 
-			.attack(attack), 
-			.x_pos(x_pos), 
-			.x_out(x), 
-			.y_out(y), 
-			.move(lfsrEnable), 
-			.attack_out(initiate_attack)
+//	enemy_control ec0(
+//			.clock(clock), 
+//			.reset_n(resetn), 
+//			.go(movement), 
+//			.health(health), 
+//			.x_pos(x_pos), 
+//			.speed(speed), 
+//			.attack(attack), 
+//			.dead(dead),
+//			.writeEn(writeEn)
+//	);
+//	
+//	enemy_datapath ed0(
+//			.clock(clock), 
+//			.resetn(resetn), 
+//			.speed(speed), 
+//			.attack(attack), 
+//			.x_pos(x_pos), 
+//			.x_out(x), 
+//			.y_out(y), 
+//			.move(lfsrEnable), 
+//			.attack_out(initiate_attack)
+//	);
+	initialization i0(
+		.clock(clock),
+		.reset_n(resetn),
+		.start_project(start_project)
+		.x_out(x),
+		.y_out(y),
+		.c_out(colour)
 	);
 		
 
 
 endmodule
 
-module initialization(clock, reset_n, start_project);
+module initialization(clock, reset_n, start_project, x_out, y_out, c_out);
 	input clock;
 	input reset_n;
 	
 	output start_project;
+	output [7:0] x_out;
+	output [6:0] y_out;
+	output [2:0] c_out;
+	
+	reg [11:0] counter;
+	reg [10:0] address_counter;
+	
+	wire [2:0] c_out;
+	
+	
+	boxerRam	boxerRam_inst (
+			.address(address_counter),
+			.clock(clock),
+			.data(3'b000),
+			.wren(1'b0),
+			.q(c_out)
+	);
+	
+	always @(posedge clock) 
+		begin
+		if (!resetn)
+			begin
+				counter <= 12'b0000_0000_0000;
+				address_counter <= 11'b000_0000_0000;
+			end
+		else if (counter == 12'b100111100111)
+			begin
+				counter <= 12'b0000_0000_0000;
+				address_counter <= 11'b000_0000_0000; 
+			end
+		else if (counter[5:0] == 6'b100111)
+			begin
+				counter <= counter + 7'b100_0000;
+				address_counter <= address_counter + 1'b1;
+			end	
+		else
+			begin
+				counter <= counter + 1'b1;
+				address_counter <= address_counter + 1'b1; 
+			end
+		end
+
+	assign x_out = 8'b0011_1100 + counter[5:0];
+	assign y_out = 7'b000_0110 + counter[11:6];
+	
+	assign start_project = 1'b0;
+	
+	
 	
 	
 endmodule
+
+
 
 module enemy_x_pos_tracker(clock, reset_n, x_pos_change, enemy_curr_x);
 	input clock;
