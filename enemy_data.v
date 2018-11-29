@@ -21,11 +21,11 @@ module enemy_datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move, a
 	always @(posedge clock) begin
 
 		if (x_pos == 2'b00)
-			x = {3'b0, 5'b10100}; //set x to 20
+			x = 8'b00010100; //set x to 20
 		else if (x_pos == 2'b01)
-			x = {2'b0, 6'b111100}; //set x to 60
+			x = 8'b00111100; //set x to 60
 		else if (x_pos == 2'b10)
-			x = {1'b0, 7'b1100100}; //set x to 100
+			x = 8'b01100100; //set x to 100
 
 	end
 
