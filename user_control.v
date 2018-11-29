@@ -1,86 +1,89 @@
-module enemy_control(clock, reset_n, block, health, can_be_hit);
+module user_control(clock, reset_n, health, rgo, lgo, block, rpunch, lpunch, can_be_hit);
 
 	//list of inputs
+	input rgo;
+	input lgo;
 	input clock;
-	input reset_n;
 	input block;
+	input reset_n;
 	input [3:0] health;
 
 	//list of outputs
-	output can_be_hit;
-
-	output plot;
+	output reg can_be_hit;
+	output reg rpunch, lpunch;
 
 	reg [3:0] current_state, next_state; 
 
 	//states listed out as local_params
-   localparam   INITIAL 	= 2'd0,
-				BLOCKED		= 2'd1,
-				DRAW		= 2'd2,
-				DEAD 		= 2'd4;
+	localparam   INITIAL 		= 3'd0,
+		     left_punch		= 3'd1,
+		     right_punch	= 3'd2,
+		     blocked		= 3'd3,
+		     dead 		= 3'd4;
 					 
-	//finite state machine transition
+		//finite state machine transition
 
 		// using key[x] as input, allow the health of the user to decrease based on the state.
 		always @(*)
 			begin 
 				case (current_state)
-					 INITIAL: 		next_state 			= block ? BLOCKED : INITIAL;
-					 BLOCKED: 		next_state 			= block ? INITIAL : BLOCKED;
-					 DRAW:			next_state			= DRAW;
-					 DEAD: 			next_state 			= DEAD;
+					INITIAL: 
+						begin
+							if (rgo)
+								next_state = right_punch;
+							else if (lgo)
+								next_state = left_punch;
+							else if (block)
+								next_state = blocked;
+							else
+								next_state = INITIAL;
+						end
+			
+					right_punch: next_state = rgo ? right_punch : INITIAL;
+					left_punch: next_state = lgo ? left_punch : INITIAL;
+					blocked: next_state = block ? blocked : INITIAL;
+					dead: next_state = dead;
+						
 				default:  next_state = INITIAL;
 			  endcase
 		 end
 
 		always @(*)
 			begin
-
-				plot = 1'b0;
-			  	
+        			can_be_hit = 1'b0;
+        			lpunch = 1'b0;
+				rpunch = 1'b0;
 			  	// if the user is in the blocked state, punches will not affect the health of the player.
 				case (current_state)
 					INITIAL: 
 						begin
 							can_be_hit = 1'b1;
 						end
-					BLOCKED:
+					left_punch: 
+						begin
+							can_be_hit = 1'b1;
+							lpunch = 1'b1;
+						end
+					right_punch: 
+						begin
+							can_be_hit = 1'b1;
+							rpunch = 1'b1;
+						end
+					blocked: 
 						begin
 							can_be_hit = 1'b0;
 						end
-					DRAW:
-						begin
-							plot	= 1'b1;
-						end
-					DEAD:
-						begin
-							dead = 1'b1;
-						end
 			  	endcase
 		 	end
+
+		 reg counter;
 		
 		 always @(posedge clock)
 			begin
 			  	if (!reset_n)
-
 					current_state <= INITIAL;
-
-				// if the health is 0 end game.
 				else if (health == 4'b0)
-					current_state <= DEAD;
-
-				// after the plotting wait and then go back into the initial state.
-				if (plot == 1'b1)
-					
-					begin
-						if (counter == 1'b1)
-							current_state <= INITIAL;
-							counter <= 1'b0;
-							plot = 1'b0;
-						else
-							counter <= counter + 1'b1;
-					end
-
+					current_state <= dead;
 				else
 					current_state <= next_state;
 			end
