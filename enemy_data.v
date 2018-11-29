@@ -30,7 +30,7 @@ module enemy_datapath(clock, resetn, speed, attack, x_pos, x_out, y_out, move, a
 	end
 
 	assign x_out = x;
-	assign y_out = 7'b1000; // SET A CONSTANT FOR Y. TODO
+	assign y_out = 7'b1000; // SET A CONSTANT FOR Y
 
 	// fix the value for rate_dividers (Lab 5 part 2)
 	
