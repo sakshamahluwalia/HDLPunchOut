@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 module enemycd(clock, reset_n, go, health);
 
 	//list of inputs
@@ -22,11 +23,25 @@ module enemycd(clock, reset_n, go, health);
 	
 	enemy_datapath ed(clock, reset_n, speed, attack, x_pos, x_out, y_out, move, attack_out);
 	
+=======
+module enemycd(clock, reset_n, go, health, x_pos, speed, attack, dead, writeEn);
+speed, attack, x_pos, x_out, y_out, move, attack_out
+
+
+
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 
 endmodule
 
 
+<<<<<<< HEAD
 module enemy_control(clock, reset_n, go, enable, health, x_pos, speed, attack, dead, writeEn);
+=======
+
+
+
+module enemy_control(clock, reset_n, go, health, x_pos, speed, attack, dead, writeEn);
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 
 	//list of inputs
 	input clock;
@@ -46,6 +61,7 @@ module enemy_control(clock, reset_n, go, enable, health, x_pos, speed, attack, d
 	reg [3:0] current_state, next_state; 
 
 	//states listed out as local_params
+<<<<<<< HEAD
    localparam   LEFT_CALM       			= 3'd0,
 				MIDDLE_CALM   					= 3'd1,
 				RIGHT_CALM       				= 3'd2,
@@ -53,6 +69,15 @@ module enemy_control(clock, reset_n, go, enable, health, x_pos, speed, attack, d
 				MIDDLE_AGGRESSIVE          = 3'd4,
 				RIGHT_AGGRESSIVE				= 3'd5,
 				DEAD								= 3'd6;
+=======
+   localparam   LEFT_CALM       				= 3'd0,
+				MIDDLE_CALM   					= 3'd1,
+				RIGHT_CALM       				= 3'd2,
+				LEFT_AGGRESSIVE    				= 3'd3,
+				MIDDLE_AGGRESSIVE          		= 3'd4,
+				RIGHT_AGGRESSIVE				= 3'd5,
+				DEAD							= 3'd6;
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 					 
 	//finite state machine transition
 
@@ -179,17 +204,30 @@ endmodule
 	output attack_out;
 
 	// used to set the x co - ordinate output at the end.
+<<<<<<< HEAD
 	reg [7:0] x;
+=======
+	wire [7:0] x;
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 
 	// set the x co - ordinate to either 20, 60, 100 based on x_pos.
 	always @(posedge clock) begin
 
+<<<<<<< HEAD
 		if (x_pos == 2'b01)
 			x <= 8'b00010100; //set x to 20
 		else if (x_pos == 2'b10)
 			x <= 8'b00111100; //set x to 60
 		else if (x_pos == 2'b11)
 			x <= 8'b01100100; //set x to 100
+=======
+		if (x_pos == 2'b00)
+			x = 8'b00010100; //set x to 20
+		else if (x_pos == 2'b01)
+			x = 8'b00111100; //set x to 60
+		else if (x_pos == 2'b10)
+			x = 8'b01100100; //set x to 100
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 
 	end
 
@@ -204,14 +242,23 @@ endmodule
 	rate_divider r025hz(clk, reset_n, {28'd499999999}, hz025); 
 
 	// use this for attacking and moving
+<<<<<<< HEAD
 	reg go;
+=======
+	wire go;
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 	
 	// when go is 0 then we have waited for hzT amount of time.
 	always @(*)
 		begin
 			case(speed)
+<<<<<<< HEAD
 				1'b0: go <= (hz025 == 0) ? 1 : 0;
 				1'b1: go <= (hz05 == 0) ? 1 : 0;
+=======
+				1'b0: go = (hz025 == 0) ? 1 : 0;
+				1'b1: go = (hz05 == 0) ? 1 : 0;
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 			endcase
 		end
 
@@ -253,7 +300,11 @@ endmodule
 endmodule
 
 module attack(clk, reset_n, move_count, attack, q);
+<<<<<<< HEAD
 	input move_count, clk, reset_n, attack;
+=======
+	input move_count, clk, reset_n;
+>>>>>>> 0e591803f642168b4ab8f0694fa1dddee68d880a
 	output reg [3:0] q;
 	
 	always @(posedge clk, negedge reset_n)
