@@ -1,0 +1,11 @@
+
+State Machine - |overall_vga_5|enemy_move_controller:emc|current_state
+Name current_state.ERASE_ENEMY current_state.WAIT current_state.PLOT current_state.DRAW_RIGHT current_state.DRAW_PLAYER current_state.DRAW_LEFT current_state.DRAW_ENEMY current_state.INITIAL 
+current_state.INITIAL 0 0 0 0 0 0 0 0 
+current_state.DRAW_ENEMY 0 0 0 0 0 0 1 1 
+current_state.DRAW_LEFT 0 0 0 0 0 1 0 1 
+current_state.DRAW_PLAYER 0 0 0 0 1 0 0 1 
+current_state.DRAW_RIGHT 0 0 0 1 0 0 0 1 
+current_state.PLOT 0 0 1 0 0 0 0 1 
+current_state.WAIT 0 1 0 0 0 0 0 1 
+current_state.ERASE_ENEMY 1 0 0 0 0 0 0 1 
