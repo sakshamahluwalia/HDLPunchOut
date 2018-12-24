@@ -6,15 +6,6 @@
 
 This project was built for our csc258 course and is a implementation of the iconic game, 'Punch Out' from scratch using verilog.
 
-target:
-https://www.google.com/search?q=sprite+image+boxing+glove+download&client=ubuntu&hs=jMr&channel=fs&tbm=isch&tbo=u&source=univ&sa=X&ved=2ahUKEwjA5pXBtOPeAhUOOq0KHUL0BrsQsAR6BAgAEAE&biw=1914&bih=955#imgrc=-Q_E-XQrZ14vgM:
-
-
-
-glove:
-https://www.google.com/search?q=sprite+image+boxing+glove+download&client=ubuntu&tbm=isch&tbs=rimg:Cd3ANZhVf3iaIjjn8oawWF2YirOmcSgqdct7xhtV_1GPE2ku5ucCM4zSEdUpr1iY6oX_185HfQdOggfMyZhKf2gNrwASoSCefyhrBYXZiKEZKxQgPFnSmDKhIJs6ZxKCp1y3sRVYV2nA9QjUoqEgnGG1X8Y8TaSxFe70QQhJ4SnSoSCbm5wIzjNIR1EexcuQXTurIsKhIJSmvWJjqhf_1wRDhLOfBsvvbEqEgnkd9B06CB8zBGpe9EphBDN2ioSCZmEp_1aA2vABEZJPMM0swJhH&tbo=u&sa=X&ved=2ahUKEwivs97XtOPeAhXij4MKHfiKAgMQ9C96BAgBEBs#imgrc=XhwKc2VsWcppyM:
-
-
 ## Authors
 
 * **Jai Aggarwal** - *Initial work* - [jai-aggarwal](https://github.com/jai-aggarwal)
